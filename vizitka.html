@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Константин Петрицын</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    min-height: 100%;
+    background: #f5ede0;
+    color: #2c1a0e;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── Фоновый узор ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse at 15% 20%, rgba(255,200,130,.35) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 75%, rgba(255,170,80,.25) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 50%, rgba(255,240,210,.5) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ── Сетка ── */
+  .page {
+    position: relative; z-index: 1;
+    min-height: 100svh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px 16px;
+  }
+
+  /* ── Карточка ── */
+  .card {
+    width: 100%; max-width: 420px;
+    background: rgba(255,248,235,.85);
+    border: 1px solid rgba(210,160,80,.3);
+    border-radius: 28px;
+    padding: 40px 36px 36px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow:
+      0 2px 0 rgba(255,255,255,.9) inset,
+      0 24px 64px rgba(160,90,20,.12),
+      0 4px 16px rgba(160,90,20,.08);
+    text-align: center;
+    animation: cardIn .6s cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(28px) scale(.97); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* ── Фото ── */
+  .avatar-wrap {
+    width: 190px; height: 190px;
+    margin: 0 auto 24px;
+    position: relative;
+  }
+  .avatar-ring {
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff8c00, #ffb347, #ff6b00, #ffd700);
+    animation: spin 5s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .avatar-photo {
+    position: absolute; inset: 4px;
+    border-radius: 50%;
+    object-fit: cover;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    display: block;
+    background: #e8d5b0;
+  }
+
+  /* ── Имя ── */
+  .name {
+    font-size: clamp(1.55rem, 5vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -.4px;
+    line-height: 1.18;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #b8860b, #ffd700, #8b6914, #daa520, #b8860b);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: goldShift 4s ease infinite;
+    filter: drop-shadow(0 1px 2px rgba(120,70,0,.2));
+  }
+  @keyframes goldShift {
+    0%,100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+
+  /* ── Специализация ── */
+  .roles {
+    display: flex; flex-direction: column; gap: 5px;
+    margin-bottom: 28px;
+  }
+  .role {
+    font-size: .95rem;
+    color: #5c3410;
+    letter-spacing: .2px;
+  }
+  .role strong {
+    color: #3d1f00;
+    font-weight: 700;
+  }
+
+  /* ── Разделитель ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,130,40,.45), transparent);
+    margin-bottom: 24px;
+  }
+
+  /* ── Соцсети ── */
+  .socials {
+    display: flex; justify-content: center; gap: 12px;
+    margin-bottom: 28px;
+  }
+  .social-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px;
+    border-radius: 16px;
+    border: 1px solid rgba(180,120,40,.25);
+    background: rgba(255,230,180,.5);
+    color: #6b3a10;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1),
+                background .2s, border-color .2s, box-shadow .2s, color .2s;
+  }
+  .social-btn:hover {
+    transform: translateY(-4px) scale(1.1);
+    background: rgba(255,200,100,.6);
+    border-color: rgba(220,120,0,.5);
+    color: #3d1f00;
+    box-shadow: 0 8px 24px rgba(200,100,0,.2);
+  }
+  .social-btn svg { width: 24px; height: 24px; fill: currentColor; }
+
+  /* ── CTA кнопка ── */
+  .cta {
+    position: relative;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%;
+    padding: 15px 28px;
+    border: none; border-radius: 16px;
+    font-size: 1rem; font-weight: 700; letter-spacing: .3px;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ff6a00, #ff8c00, #ff5500);
+    background-size: 200% 200%;
+    animation: gradShift 4s ease infinite;
+    box-shadow: 0 4px 20px rgba(255,100,0,.4), 0 1px 0 rgba(255,255,255,.25) inset;
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
+  }
+  @keyframes gradShift {
+    0%,100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+  .cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.2), transparent);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .cta:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 32px rgba(255,100,0,.5); }
+  .cta:hover::before { opacity: 1; }
+  .cta:active { transform: scale(.97); }
+  .cta svg { width: 20px; height: 20px; fill: currentColor; flex-shrink: 0; }
+
+  /* ── Теги / бейджи ── */
+  .tags {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    margin-top: 22px;
+  }
+  .tag {
+    font-size: .75rem; font-weight: 600; letter-spacing: .3px;
+    color: #8a5520;
+    background: rgba(210,150,60,.12);
+    border: 1px solid rgba(200,130,40,.25);
+    border-radius: 999px;
+    padding: 4px 12px;
+    transition: background .2s, color .2s;
+  }
+  .tag:hover { background: rgba(255,140,0,.2); color: #5c2e00; }
+
+  @media (max-width: 420px) {
+    .card { padding: 30px 18px 28px; border-radius: 22px; }
+    .avatar-wrap { width: 160px; height: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="card">
+
+    <!-- Фото -->
+    <div class="avatar-wrap">
+      <div class="avatar-ring"></div>
+      <img class="avatar-photo" src="photo_2025-08-07_15-12-10.jpg" alt="Константин Петрицын">
+    </div>
+
+    <!-- Имя -->
+    <h1 class="name">Константин<br>Петрицын</h1>
+
+    <!-- Специализация -->
+    <div class="roles">
+      <div class="role"><strong>Наставник по счастью</strong> <span>)))&nbsp;✨</span></div>
+      <div class="role"><strong>Вайбкодер</strong> <span>⚡</span></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Соцсети -->
+    <div class="socials">
+      <!-- Telegram -->
+      <a class="social-btn" href="https://t.me/+jaTkGvqx6C5jODk5" target="_blank" rel="noopener" title="Telegram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+        </svg>
+      </a>
+
+      <!-- Поделиться -->
+      <button class="social-btn" title="Поделиться" onclick="shareCard()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
+        </svg>
+      </button>
+
+      <!-- Скопировать ссылку -->
+      <button class="social-btn" title="Скопировать ссылку на Telegram" onclick="copyLink()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Кнопка CTA -->
+    <a class="cta" href="https://t.me/+jaTkGvqx6C5jODk5" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+      </svg>
+      Написать мне
+    </a>
+
+    <!-- Теги -->
+    <div class="tags">
+      <span class="tag">#счастье</span>
+      <span class="tag">#коучинг</span>
+      <span class="tag">#вайбкодинг</span>
+      <span class="tag">#саморазвитие</span>
+      <span class="tag">#ai</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- Уведомление -->
+<div id="toast" style="
+  position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(80px);
+  background:rgba(80,40,0,.92); border:1px solid rgba(220,140,40,.5);
+  color:#ffe4b0; font-size:.875rem; font-weight:600;
+  padding:12px 24px; border-radius:999px;
+  box-shadow:0 8px 24px rgba(0,0,0,.2);
+  backdrop-filter:blur(12px);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+  opacity:0; z-index:999; white-space:nowrap;
+"></div>
+
+<script>
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(t._tid);
+  t._tid = setTimeout(()=>{
+    t.style.opacity='0';
+    t.style.transform='translateX(-50%) translateY(80px)';
+  }, 2400);
+}
+
+function shareCard(){
+  const data = {
+    title: 'Константин Петрицын',
+    text: 'Наставник по счастью | Вайбкодер',
+    url: 'https://t.me/+jaTkGvqx6C5jODk5'
+  };
+  if(navigator.share){
+    navigator.share(data).catch(()=>{});
+  } else {
+    copyLink();
+  }
+}
+
+function copyLink(){
+  const url = 'https://t.me/+jaTkGvqx6C5jODk5';
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(()=>showToast('✓ Ссылка скопирована'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✓ Ссылка скопирована');
+  }
+}
+</script>
+</body>
+</html>
